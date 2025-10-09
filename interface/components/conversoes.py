@@ -12,13 +12,12 @@ def componente_conversoes():
         "Suba o arquivo que deseja converter",
         type=["csv", "txt"]
     )
-    
+
     if uploaded_file:
         try:
             # Lê o conteúdo do arquivo como bytes e converte para um DataFrame
             file_content = uploaded_file.read()  # Lê o conteúdo do arquivo
             df = pd.read_csv(StringIO(file_content.decode("utf-8")))  # Decodifica e lê como CSV
-            
             st.write("Pré-visualização do arquivo:")
             st.write(df)
             

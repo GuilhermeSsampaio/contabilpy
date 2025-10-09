@@ -1,11 +1,8 @@
 import streamlit as st
 import pandas as pd
 from io import StringIO  # Importa StringIO do módulo io
-import sys
-import os
 
-from interface.components.conversoes import componente_conversoes
-from tools.convert_files import convert_csv_to_excel
+from components.conversoes import componente_conversoes
 
 st.header("Manipulação de tabelas")
 
