@@ -1,8 +1,19 @@
+from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 import subprocess
+import threading
 
-def main():
-    # Define o diretório raiz do projeto
-    subprocess.run(["streamlit", "run", "app.py"], shell=True)
+app = FastAPI()
 
-if __name__ == "__main__":
-    main()
+# Função para rodar o Streamlit em uma thread separada
+def run_streamlit():
+    subprocess.run(["streamlit", "run", "app.py", "--server.port=8501", "--server.headless=true"])
+
+# Inicia o Streamlit em uma thread
+thread = threading.Thread(target=run_streamlit, daemon=True)
+thread.start()
+
+@app.get("/")
+def redirect_to_streamlit():
+    # Redireciona para o Streamlit
+    return RedirectResponse(url="http://localhost:8501")

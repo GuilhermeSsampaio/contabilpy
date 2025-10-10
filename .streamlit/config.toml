@@ -1,2 +1,4 @@
 [client]
 showSidebarNavigation = false
+port = 80
+enableCORS = false
