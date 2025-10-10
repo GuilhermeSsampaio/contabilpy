@@ -1,10 +1,13 @@
 import sys
 import os
+
+from components.sidebar import sidebar
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 import streamlit as st
 from agent.ContAi import contAgent
 from agno.agent import RunEvent
 
+sidebar()
 st.title("ContAi")
 st.write("Agente de IA que automatiza seus B.Os")
 
