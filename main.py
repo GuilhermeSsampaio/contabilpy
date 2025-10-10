@@ -17,3 +17,4 @@ thread.start()
 def redirect_to_streamlit():
     # Redireciona para o Streamlit
     return RedirectResponse(url="https://contabil-py.squareweb.app:8501")
+# 
