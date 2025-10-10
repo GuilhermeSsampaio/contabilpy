@@ -3,16 +3,10 @@ import pandas as pd
 from io import StringIO  # Importa StringIO do módulo io
 from tools.convert_files import convert_csv_to_excel
 
-def componente_conversoes():
+def componente_conversoes(uploaded_file=None):
     st.subheader("Conversões")
     st.write("Aqui você pode converter seus dados para diferentes formatos.")
-    st.write("divirta-se!")
-    # Upload do arquivo
-    uploaded_file = st.file_uploader(
-        "Suba o arquivo que deseja converter",
-        type=["csv", "txt"]
-    )
-
+    st.write("Suba seu(s) arquivo(s) e divirta-se!")
     if uploaded_file:
         try:
             # Lê o conteúdo do arquivo como bytes e converte para um DataFrame
