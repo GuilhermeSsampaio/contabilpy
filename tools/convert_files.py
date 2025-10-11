@@ -9,5 +9,5 @@ def convert_csv_to_excel(input_file):
     output = BytesIO()
     readed_file.to_excel(output, index=False, engine='openpyxl')  # Usa o engine 'openpyxl' para Excel
     output.seek(0)  # Retorna o ponteiro para o início do arquivo em memória
-    
+    print(f"Arquivo convertido com sucesso para Excel.:")
     return output

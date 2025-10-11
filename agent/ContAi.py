@@ -8,6 +8,9 @@ import io
 gemini_api_key = st.secrets["GOOGLE_API_KEY"]
 
 # Função wrapper para converter CSV para Excel que o agente poderá chamar
+# é como uma interface para avisar o agente sobre a funcionalidade disponível
+# a conversao real é feita na função convert_csv_to_excel, na pagina agent.py
+
 def converter_csv_para_excel(file_path):
     """
     Converte um arquivo CSV para Excel
@@ -24,8 +27,8 @@ def converter_csv_para_excel(file_path):
         
         if not file_path.lower().endswith('.csv'):
             return {"success": False, "message": f"O arquivo {file_path} não é um CSV"}
-        
-        output_bytes = convert_csv_to_excel(file_path)
+        # essa linha somente chama a função de conversão e obtém o arquivo convertido em memória
+        # output_bytes = convert_csv_to_excel(file_path)
         file_name = os.path.splitext(os.path.basename(file_path))[0] + ".xlsx"
         
         return {

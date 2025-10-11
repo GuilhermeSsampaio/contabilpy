@@ -11,6 +11,11 @@ from tools.convert_files import convert_csv_to_excel
 import io
 import json
 
+# quebrar esse arquivo grande em partes menores
+# entender minuciosamente o fluxo de dados
+# melhorar UX para casos de uso específicos
+# expandir funcionalidades do agente
+
 sidebar()
 st.title("ContAi")
 st.write("Agente de IA que automatiza seus B.Os")
@@ -139,7 +144,7 @@ if prompt := st.chat_input("Digite sua mensagem e suba seus arquivos.", accept_f
                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     )
                     
-                    full_response = f"Converti o arquivo {os.path.basename(file_path)} para Excel. O download está disponível acima."
+                    full_response = f"Converti o arquivo {os.path.basename(file_path)} para Excel. O download está disponível abaixo."
                     converted_file_name = file_name
                     converted_files_in_session[file_name] = output_bytes.getvalue()
                     file_download_info = {"file_name": file_name}
