@@ -1,0 +1,12 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:8501" # Mapeia a porta 80 do host para a porta 8501 do contêiner
+    volumes:
+      - .:/app # Monta o diretório atual no contêiner para facilitar o desenvolvimento
+    environment:
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0

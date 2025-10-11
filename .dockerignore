@@ -1,0 +1,11 @@
+# Ignore o ambiente virtual
+venv/
+
+# Ignore o diretório de desenvolvimento do VS Code
+.devcontainer/
+
+# Ignore arquivos desnecessários
+*.pyc
+__pycache__/
+.DS_Store
+*.log
