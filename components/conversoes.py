@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from io import StringIO  # Importa StringIO do módulo io
 from tools.convert_files import convert_csv_to_excel
-
+# quebrar mais essa função
 def componente_conversoes(uploaded_file=None):
     st.subheader("Conversões")
     st.write("Aqui você pode converter seus dados para diferentes formatos.")
@@ -18,7 +18,7 @@ def componente_conversoes(uploaded_file=None):
             st.write("Para qual formato você deseja converter seus dados?")
             option = st.selectbox(
                 "Selecione o formato de conversão", 
-                ("CSV para Excel", "Excel para CSV", "JSON para CSV", "CSV para JSON"),
+                ("CSV para Excel", "Excel para CSV", "JSON para CSV", "CSV para JSON", "Excel para HTML", "HTML para Excel"),
             )
             
             if st.button("Converter"):

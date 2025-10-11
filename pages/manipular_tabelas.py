@@ -13,9 +13,17 @@ st.header("Manipulação de tabelas")
 # Upload do arquivo
 uploaded_file = st.file_uploader(
         "Suba o(s) arquivo(s) que deseja manipular",
-        type=["csv", "txt"]
+        type=["csv", "txt", "html", "xlsx", "json"]
     )
 
+# atualizar a logica pra multiplos arquivos
+
+# uploaded_files = st.file_uploader(
+#         "Suba o(s) arquivo(s) que deseja manipular",
+#         type=["csv", "txt", "html", "xlsx", "json"],
+#         accept_multiple_files=True
+        
+#     )
 conversoes, extracoes, juncoes, relatorios, graficos, dashboards = st.tabs(["Conversões", "Extrações", "Junções", "Relatórios", "Gráficos", "Dashboards"])
 
 
