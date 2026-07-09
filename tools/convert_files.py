@@ -28,31 +28,36 @@ def convert_csv_to_html(input_file):
     return html_content
 
 def convert_excel_to_csv(input_file):
-     # Lê o arquivo CSV enviado
+    # Lê o arquivo Excel enviado
     readed_file = pd.read_excel(input_file)
-    
-    output = BytesIO()
-    readed_file.to_excel(output, index=False) 
-    output.seek(0)
-    print(f"Arquivo convertido com sucesso para csv.")
-    return output
+    # Retorna os bytes do CSV
+    csv_content = readed_file.to_csv(index=False).encode('utf-8')
+    print("Arquivo convertido com sucesso para csv.")
+    return csv_content
 
 def convert_excel_to_html(input_file):
     readed_file = pd.read_excel(input_file)
-    
     html_content = readed_file.to_html(index=False) 
-    print(f"Arquivo convertido com sucesso para html.")
+    print("Arquivo convertido com sucesso para html.")
     return html_content
 
 def convert_html_to_excel(input_file):
-    pass
-
+    # read_html retorna uma lista de dataframes. Pegamos o primeiro.
+    readed_file = pd.read_html(input_file)[0]
+    output = BytesIO()
+    readed_file.to_excel(output, index=False, engine='openpyxl')
+    output.seek(0)
+    print("Arquivo convertido com sucesso para Excel.")
+    return output
 
 def convert_json_to_csv(input_file):
-    pass
+    readed_file = pd.read_json(input_file)
+    csv_content = readed_file.to_csv(index=False).encode('utf-8')
+    print("Arquivo convertido com sucesso para CSV.")
+    return csv_content
 
 def convert_html_to_csv(input_file):
-    pass
-
-
-
+    readed_file = pd.read_html(input_file)[0]
+    csv_content = readed_file.to_csv(index=False).encode('utf-8')
+    print("Arquivo convertido com sucesso para CSV.")
+    return csv_content

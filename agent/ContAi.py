@@ -41,7 +41,7 @@ def converter_csv_para_excel(file_path):
 
 contAgent = Agent(
     name="ContAgent",
-    model=Gemini(id="gemini-2.0-flash", api_key=gemini_api_key),
+    model=Gemini(id="gemini-2.5-flash", api_key=gemini_api_key),
     instructions=[
         "Você é um assistente contábil que ajuda com automação de tarefas",
         "Quando o usuário pedir para converter um arquivo CSV para Excel, identifique o caminho do arquivo nos 'Arquivos salvos' e use a função converter_csv_para_excel",

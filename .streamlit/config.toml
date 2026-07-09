@@ -1,4 +1,6 @@
 [client]
 showSidebarNavigation = false
-port = 80
+
+[server]
+fileWatcherType = "poll"
 enableCORS = false

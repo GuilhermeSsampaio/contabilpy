@@ -5,43 +5,44 @@ import pandas as pd
 from io import StringIO 
 from components.dowload_button import dowload_button
 from tools.convert_files import *
+from components.utils import selecionar_arquivo, carregar_dataframe
 import os 
 import json
 
 # quebrar mais essa função
-def componente_conversoes(uploaded_file=None):
+def componente_conversoes(uploaded_files=None):
     st.subheader("Conversões")
     st.write("Aqui você pode converter seus dados para diferentes formatos.")
     st.write("Suba seu(s) arquivo(s) e divirta-se!")
-    if uploaded_file:
+    
+    selected_file = selecionar_arquivo(uploaded_files, key_suffix="conversoes")
+    
+    if selected_file:
         try:
             # Obtém a extensão do arquivo
-            file_name = uploaded_file.name if hasattr(uploaded_file, "name") else "arquivo_convertido"
-            file_extension = os.path.splitext(file_name)[1].lower()  # Obtém a extensão em minúsculas
+            file_name = selected_file.name if hasattr(selected_file, "name") else "arquivo_convertido"
+            file_extension = os.path.splitext(file_name)[1].lower()
 
-            # Lê o conteúdo do arquivo como bytes
-            file_content = uploaded_file.read()
-
-            # Handling baseado na extensão do arquivo
-            if file_extension == ".csv":
-                df = pd.read_csv(StringIO(file_content.decode("utf-8")))
-                st.write("Pré-visualização do arquivo CSV:")
+            # Mostra preview
+            df = carregar_dataframe(selected_file)
+            if df is not None:
+                st.write(f"Pré-visualização do arquivo ({file_extension}):")
                 st.write(df)
-            elif file_extension in [".xls", ".xlsx"]:
-                df = pd.read_excel(uploaded_file)
-                st.write("Pré-visualização do arquivo Excel:")
-                st.write(df)
-            elif file_extension == ".json":
-                data = json.loads(file_content.decode("utf-8"))
-                st.write("Pré-visualização do arquivo JSON:")
-                st.json(data)
-            elif file_extension == ".html":
-                json_content = file_content.decode("utf-8")
-                st.write("Pré-visualização do arquivo HTML:")
-                st.markdown(json_content, unsafe_allow_html=True)
             else:
-                
-                st.warning(f"Tipo de arquivo '{file_extension}' não suportado para visualização.")
+                # Tratar como HTML ou JSON puro para leitura se não for dataframe
+                # Reiniciar ponteiro caso não tenha virado df
+                selected_file.seek(0)
+                file_content = selected_file.read()
+                if file_extension == ".json":
+                    data = json.loads(file_content.decode("utf-8"))
+                    st.write("Pré-visualização do arquivo JSON:")
+                    st.json(data)
+                elif file_extension == ".html":
+                    json_content = file_content.decode("utf-8")
+                    st.write("Pré-visualização do arquivo HTML:")
+                    st.markdown(json_content, unsafe_allow_html=True)
+                else:
+                    st.warning(f"Tipo de arquivo '{file_extension}' não suportado para visualização tabular.")
 
             # Seleção de formato de conversão
             st.write("Para qual formato você deseja converter seus dados?")
@@ -60,9 +61,12 @@ def componente_conversoes(uploaded_file=None):
             nome_sem_extensao = file_name.split(".",1)[0]
 
             if st.button("Converter"):
+                # Reset pointer again before reading for conversion
+                selected_file.seek(0)
+                file_content = selected_file.read()
+                
                 if option == "CSV para Excel" and file_extension == ".csv":
                     try:
-                        # Converte CSV para Excel
                         excel_file = convert_csv_to_excel(StringIO(file_content.decode("utf-8")))
                         mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                         dowload_button(excel_file, nome_sem_extensao + ".xlsx", mime)
@@ -71,7 +75,6 @@ def componente_conversoes(uploaded_file=None):
                 
                 elif option == "CSV para HTML" and file_extension == ".csv":
                     try:
-                        # Converte CSV para HTML
                         html_content = convert_csv_to_html(StringIO(file_content.decode("utf-8")))
                         mime = "text/html"
                         dowload_button(html_content, nome_sem_extensao + ".html", mime)
@@ -80,7 +83,6 @@ def componente_conversoes(uploaded_file=None):
                 
                 elif option == "CSV para JSON" and file_extension == ".csv":
                     try:
-                        # Converte CSV para JSON
                         json_content = convert_csv_to_json(StringIO(file_content.decode("utf-8")))
                         mime = "application/json"
                         dowload_button(json_content, nome_sem_extensao + ".json", mime)
@@ -89,25 +91,23 @@ def componente_conversoes(uploaded_file=None):
                 
                 elif option == "Excel para CSV" and file_extension in [".xls", ".xlsx"]:
                     try:
-                        # Converte Excel para CSV
-                        csv_file = convert_excel_to_csv(uploaded_file)
+                        selected_file.seek(0)
+                        csv_file = convert_excel_to_csv(selected_file)
                         mime = "text/csv"
-                        
                         dowload_button(csv_file, nome_sem_extensao + ".csv", mime)
                     except Exception as e:
-                                    st.error(f"Erro ao converter Excel para CSV: {e}")
+                        st.error(f"Erro ao converter Excel para CSV: {e}")
+                        
                 elif option == "HTML para Excel" and file_extension == ".html":
                     try:
-                        # Converte HTML para Excel usando Aspose.Cells
-                        excel_file = convert_html_to_excel(uploaded_file)
+                        selected_file.seek(0)
+                        excel_file = convert_html_to_excel(selected_file)
                         mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                         dowload_button(excel_file, nome_sem_extensao + ".xlsx", mime)
                     except Exception as e:
                         st.error(f"Erro ao converter HTML para Excel: {e}")             
                 else:
-                    st.warning("Conversão ainda não implementada para este formato ou tipo de arquivo.")
-                    st.warning("Ou você selecionou para converter para o mesmo tipo do arquivo de origem.")
-        except pd.errors.EmptyDataError:
-            st.error("O arquivo enviado está vazio ou não possui dados válidos.")
+                    st.warning("Conversão não implementada para este formato ou tipo de origem incompatível.")
+        
         except Exception as e:
             st.error(f"Erro ao processar o arquivo: {e}")
