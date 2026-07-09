@@ -1,7 +1,0 @@
-- extração de tabelas de pdfs, htmls, e salvar em xls
-- converter arquivos tipo execl - html
-- junção de tabelas
-- exportar dados
-- carregar dados
-- pedir pro agente fazer alguma coisa usando as ferramentas disponiveis
--
