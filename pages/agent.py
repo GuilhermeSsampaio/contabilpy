@@ -76,15 +76,28 @@ if prompt := st.chat_input("Digite sua mensagem e suba seus arquivos.", accept_f
             try:
                 file.seek(0)
             except Exception:
-                raise Exception("Não foi possível resetar o ponteiro do arquivo.")
+                pass
             with open(save_path, "wb") as f:
                 f.write(file.read())
             saved_paths.append(save_path)
             
             st.markdown(f"**Arquivo recebido e salvo localmente:** {file.name}")
-
+            
+    # Salva as rotas dos arquivos no state na última mensagem para memória futura
     if saved_paths:
-        prompt_text += "\n\nArquivos salvos no meu sistema:\n" + "\n".join(saved_paths)
+        st.session_state.messages[-1]["saved_paths"] = saved_paths
+        prompt_text += "\n\n[SISTEMA: Arquivos salvos no meu sistema nesta mensagem:]\n" + "\n".join(saved_paths)
+
+    # Injetando memória: construir o histórico das últimas 6 mensagens
+    contexto = "Histórico Recente da Conversa:\n"
+    for msg in st.session_state.messages[-7:-1]:
+        role = "Usuário" if msg["role"] == "user" else "ContAi"
+        texto = msg['content']
+        if "saved_paths" in msg:
+            texto += "\n[SISTEMA: Arquivos salvos no meu sistema nesta mensagem:]\n" + "\n".join(msg["saved_paths"])
+        contexto += f"{role}: {texto}\n"
+        
+    prompt_completo = f"{contexto}\nNova mensagem do Usuário: {prompt_text}"
 
     with st.chat_message("assistant"):
         message_container = st.container()
@@ -95,7 +108,7 @@ if prompt := st.chat_input("Digite sua mensagem e suba seus arquivos.", accept_f
             # Resetar os pendentes antes de rodar a IA
             st.session_state.pending_downloads = []
 
-            for chunk in contAgent.run(prompt_text, stream=True):
+            for chunk in contAgent.run(prompt_completo, stream=True):
                 if getattr(chunk, "event", None) == RunEvent.run_content:
                     full_response += getattr(chunk, "content", "")
                     response_placeholder.markdown(full_response)
