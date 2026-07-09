@@ -4,4 +4,6 @@ plotly
 scikit-learn
 agno
 google-generativeai
+google-genai
 openpyxl
+lxml
