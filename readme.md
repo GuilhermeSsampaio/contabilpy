@@ -1,29 +1,38 @@
-# ContabiliPy 🚀
+<div align="center">
+  <img src="logo.png" width="150" alt="ContabiliPy Logo">
+  <h1>ContabiliPy 🚀</h1>
+  <p><em>Plataforma SaaS de Automação Contábil e Data Science</em></p>
+</div>
 
-Bem-vindo ao **ContabiliPy**, sua plataforma de contabilidade automatizada com IA e um arcabouço completo de ferramentas. Este projeto foi criado com o intuito de acelerar e facilitar as rotinas contábeis utilizando Inteligência Artificial e automações baseadas em Python.
+Bem-vindo ao **ContabiliPy**, uma solução completa desenvolvida para transformar rotinas contábeis utilizando Inteligência Artificial, Machine Learning e automações avançadas em Python.
 
 ## 🎯 Funcionalidades Principais
 
-- **Agente de IA (ContAi):** Um assistente inteligente alimentado pelo modelo Gemini (via biblioteca `agno`). O agente é capaz de interagir com o usuário, interpretar intenções e realizar tarefas automáticas, como converter arquivos CSV para Excel a partir das suas solicitações no chat.
-- **Manipulação de Tabelas:** Uma interface rica no Streamlit que conta com abas de diversas funcionalidades:
-  - 🔄 **Conversões:** Converta arquivos de forma rápida (CSV para Excel, JSON, HTML, etc.).
-  - 📥 **Extrações:** Extraia dados de diferentes formatos de arquivo.
-  - 🔗 **Junções:** Junte múltiplas tabelas para análises mais aprofundadas.
-  - 📊 **Relatórios & Gráficos:** Gere insights visuais e documentos sumarizados dos seus dados.
-  - 📈 **Dashboards:** Crie painéis interativos com as informações processadas.
-- **Upload Múltiplo:** Suporte para o upload de diversos tipos de arquivos (`.csv`, `.txt`, `.html`, `.xlsx`, `.json`).
+- **🤖 Agente de IA (ContAi):** Um assistente inteligente (via framework `agno` + Google Gemini) com capacidade de *Function Calling*. Ele entende suas intenções, converte arquivos em lote e extrai estatísticas matemáticas avançadas de suas planilhas usando consultas dinâmicas e respondendo em linguagem natural.
+- **🎲 IA Preditiva (Machine Learning):** Módulo avançado de Data Science alimentado pelo `scikit-learn`:
+  - **Regressão e Classificação:** Treine modelos (ex: Random Forest) em tempo real para simular análises de crédito, estimativas de custos ou previsão de vendas.
+  - **Séries Temporais:** Projete o faturamento futuro do seu negócio gerando gráficos preditivos interativos baseados no seu histórico.
+- **📂 Manipulação Avançada de Dados:** Uma suíte completa baseada na força do Pandas:
+  - 🔄 **Conversões:** Transição livre entre Excel (.xlsx), CSV, JSON e HTML.
+  - 📥 **Extrações:** Oculte colunas e aplique filtros matemáticos e lógicos dinâmicos.
+  - 🔗 **Junções:** Realize operações complexas de `Merge` (PROCV inteligente) e `Concat` (Empilhamento).
+  - 📊 **Dashboards Interativos:** Geração automática de gráficos com a biblioteca `Plotly` (Barras, Linhas, Pizza, Área, Histograma e Dispersão), permitindo zoom e exportação de imagens.
+  - 📄 **Relatórios (Laudos Técnicos):** Auditoria rápida gerando resumos em `.txt` sobre tipos de dados, contagens e valores nulos.
+- **ℹ️ Central de Ajuda Contextual:** Modais integrados (estilo *React Props* via `st.dialog`) espalhados por todo o sistema para facilitar a curva de aprendizado de usuários novos.
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **[Python](https://www.python.org/)** - Linguagem principal.
-- **[Streamlit](https://streamlit.io/)** - Framework para construção de toda a interface web.
-- **[Pandas](https://pandas.pydata.org/)** - Biblioteca principal para manipulação e análise de dados.
-- **[Agno](https://github.com/agno-ai/agno) & Google Gemini** - Utilizados para construir e prover o agente de Inteligência Artificial.
-- **Docker & Docker Compose** - Para facilitar a conteinerização e deploy da aplicação.
+- **[Python](https://www.python.org/)** - Engine de processamento principal.
+- **[Streamlit](https://streamlit.io/)** - Construção de toda a interface web reativa.
+- **[Pandas](https://pandas.pydata.org/)** - Engenharia de dados e ETL.
+- **[Scikit-Learn](https://scikit-learn.org/)** - Modelagem preditiva de Machine Learning.
+- **[Plotly](https://plotly.com/)** - Gráficos e Dashboards responsivos.
+- **[Agno](https://github.com/agno-ai/agno) & Google Gemini** - Orquestração e criação do Agente de Inteligência Artificial.
+- **Docker** - Conteinerização de ambientes.
 
 ## ⚙️ Pré-requisitos
 
-Para rodar o projeto localmente, certifique-se de ter o Python (3.10+) instalado. Você também precisará configurar suas credenciais do Google Gemini API.
+Para rodar o projeto localmente, certifique-se de ter o Python (3.10+) instalado. Você também precisará configurar suas credenciais da API do Google Gemini.
 
 1. Crie uma pasta oculta `.streamlit` na raiz do projeto.
 2. Dentro dela, crie um arquivo chamado `secrets.toml`.
@@ -66,13 +75,12 @@ Você pode executar o projeto de duas formas: nativamente usando Python ou via D
 
 ## 📂 Estrutura do Projeto
 
-- `/agent` - Contém a lógica de configuração e inicialização do agente de IA (ContAi).
-- `/components` - Componentes reutilizáveis do Streamlit (como a barra lateral, gráficos, dashbords, conversões).
-- `/pages` - As diferentes páginas da aplicação Streamlit (Agente, Manipulação de tabelas, etc.).
-- `/tools` - Funções utilitárias como conversores de arquivos (`convert_csv_to_excel`, etc.).
-- `app.py` - O arquivo principal de entrada (Home) da aplicação.
-- `requirements.txt` - Lista de dependências do projeto.
-- `Dockerfile` & `docker-compose.yaml` - Arquivos de configuração para o Docker.
+- `/agent` - Cérebro do projeto. Contém a configuração, tools e instruções do agente ContAi (`agno`).
+- `/components` - Módulos de interface reutilizáveis (Dashboards, Junções, Sidebar, Modais de Ajuda, Previsão IA).
+- `/pages` - Telas de navegação do Streamlit.
+- `/tools` - Scripts utilitários "burros" para manipulação de arquivos consumidos pelo Agente.
+- `app.py` - Ponto de entrada (Home).
+- `requirements.txt` - Arquivo oficial com as dependências master (otimizado para nuvem/Linux).
 
 ## 👨‍💻 Desenvolvedor
 Desenvolvido por **Guilherme Sampaio**  
