@@ -4,14 +4,25 @@ import pandas as pd
 from components.sidebar import sidebar
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 import streamlit as st
+st.set_page_config(page_title="ContabiliPy | Agente IA", page_icon="logo.png", layout="wide")
 from agent.ContAi import contAgent
 from agno.agent import RunEvent
 import tempfile
 import json
 
+from components.help_modal import render_help
+
 sidebar()
 st.title("ContAi")
 st.write("Agente de IA que automatiza seus B.Os contábeis e de análise de dados.")
+
+texto_ajuda_agente = """
+**O que o ContAi pode fazer por você?**
+1. **Conversão Mágica**: Faça o upload de arquivos Excel, CSV, JSON ou HTML e peça: *"Converta esse arquivo para Excel"*.
+2. **Análise de Dados**: Faça perguntas sobre os números do arquivo: *"Qual a média de idade?", "Qual o maior salário?", "Quantas linhas tem essa tabela?"*.
+3. **Filtros Ocultos**: A IA sabe filtrar dados! Pergunte: *"Qual a média de idade APENAS dos clientes com Crédito Aprovado?"*.
+"""
+render_help("O que a IA pode fazer?", texto_ajuda_agente, "agente")
 
 INITIAL_MESSAGE = {
     "role": "assistant",
@@ -23,7 +34,7 @@ if "messages" not in st.session_state:
 
 col1, col2 = st.columns([0.8, 0.2])
 with col2:
-    if st.button("🗑️ Limpar Chat"):
+    if st.button("Limpar Chat", icon=":material/delete:"):
         st.session_state.messages = [INITIAL_MESSAGE]
         st.rerun()
 
